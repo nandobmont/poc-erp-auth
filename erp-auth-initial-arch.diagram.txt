@@ -1,0 +1,21 @@
+title Arquitetura Macro
+
+participant "User" as user
+participant "SSO" as sso
+participant "Web APP" as web
+participant "Gateway" as gateway
+participant "Resource" as resource
+
+user->web: Access app
+web->web: Validate token from cookies 
+web->sso: Redirect login
+sso->user: Present Login Form
+user->sso: Credentials
+sso->sso: Validate credentials
+sso->web:Access Token / idToken
+web->gateway:Tenta acessar algum resource\n{ token }
+gateway->gateway: Introspect token
+gateway->resource: Get resource
+resource-->gateway: return requested data 
+gateway-->web: response { data }
+note right of resource:- client credentials client side\n- dynamic operation\n- onboarding\n- required actions keycloak\n- roles / profiles / scopes
